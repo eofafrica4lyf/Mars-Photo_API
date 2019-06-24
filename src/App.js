@@ -1,10 +1,7 @@
 import React, {Component} from 'react';
-// import ReactDOM from 'react-dom';
 import request from 'request';
 import './App.css';
 import Nav from "./nav";
-// import Form from "./form";
-// import Photo from "./Photo.js"
 class App extends Component {
   
   constructor (props){
@@ -22,19 +19,13 @@ class App extends Component {
 	
   onSubmit = (event) => {
 		event.preventDefault();
-		// console.log('After submitting form.');
-		// console.log(this.state.sol,this.state.camera);
 		this.addToQueryString(this.state.sol,this.state.camera);
-		// console.log(window.location.search);
 		
 	};
   
   
   addToQueryString = (sol,camera) => {
-    // console.log('After submitting form.');
     console.log(sol,camera);
-    // const urlSearchParams = window.location.search;
-    // console.log(urlSearchParams);
 	  //Ensure that the right parameters are assigned.
 	  if(sol === "" || camera === "" || !(/\d/.test(sol)) ){
 	  	alert("Please select/fill in the right format/options");
@@ -47,24 +38,14 @@ class App extends Component {
       if(response){
         const data = response.body.photos;
         console.log(data);
-        // console.log("State");
-        // console.log(this.state);
 	      alert(`${data.length} photos found`);
         this.setState({photos: data});
-        // console.log("State");
-        // console.log(this.state);
-        // console.log(this.state);
-        // data.map(({img_src}) => {
-        //   console.log(img_src);
-        // });
-        // let photoURL;
       }else if(error){
         // console.log('Error Message');
-        // console.log(error);
+        alert(error);
       }
       
     });
-    // console.log(url);
     
   };
   
@@ -74,7 +55,7 @@ class App extends Component {
       <div className="container">
         <Nav />
         <main>
-          <aside style={asideStyle}>
+          <aside>
             <div>
               <h1>Search</h1>
 	            <form id="search-form" onSubmit={this.onSubmit} >
@@ -115,46 +96,20 @@ class App extends Component {
           
           </aside>
           <section id="photo-display">
-            {/*<img alt="gh" src="https://www.nairaland.com/vertipics/x72jc2buebsfvwgjr1ze33u4gonh21og.png" />*/}
-            {/*<img alt="altText" src="http://mars.jpl.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/00000/opgs/edr/fcam/FRA_397506068EDR_D0010008AUT_04096M_.JPG"/>*/}
-            {
-              // this.state.photos;
-            }
             {
             this.state.photos.map(({img_src, id}) => {
-              // console.log('What is supposed to display');
-              // console.log(this.state.photos);
-              // console.log(photoInfo);
-              // console.log(photoInfo.img_src);
-              // var p = photoInfo.img_src;
-              // return <img key={Date.now} alt="hgjhgj" src="http://mars.jpl.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/00000/opgs/edr/fcam/FRA_397506068EDR_D0010008AUT_04096M_.JPG" />
               return <>
-	              {/*<div >*/}
 	              <img key={id} alt="hgjhgj" src={img_src} />
-	              {/*<p></p>*/}
-	              {/*</div>*/}
 	              </>
-              // <div>
-              //   photoInfo.img_url;
-              // </div>
             })
             
             }
-            
-            
           </section>
         </main>
       </div>
     );
   }
   
-  
-  
 }
-
-let asideStyle = {
-  // background: 'black'
-};
-
 
 export default App;

@@ -4,15 +4,7 @@ function Nav (props){
 	return(
 		<>
 			<nav>
-            <span className="home">
-                Home
-            </span>
-				<span className="results">
-                Results
-            </span>
-				<span className="results">
-                Results
-            </span>
+        <h1>Mars Photo API</h1>
 			</nav>
 		</>
 	);
