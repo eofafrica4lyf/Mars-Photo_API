@@ -40,6 +40,7 @@ main aside{
     text-align: center;
     color: #413e0c;
     box-shadow: 2px 3px 10px black;
+    max-width: 500px;
 }
 
 main aside h1, main aside label{
@@ -54,7 +55,7 @@ main aside div{
     flex: 1;
 }
 
-main section{
+main section, main section div{
     display: flex;
     flex-direction: row;
     flex: 5 0 0;
