@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import request from 'request';
 import './App.css';
 import Nav from "./nav";
+import Loader from 'react-loader'
 class App extends Component {
   
   constructor (props){
@@ -9,7 +10,9 @@ class App extends Component {
     this.state = {
         photos: [],
         sol: "",
-        camera: "",
+				camera: "",
+				loaded: true,
+				form_filled: true
     };
 	  this.onChange = this.onChange.bind(this);
 	  this.onSubmit = this.onSubmit.bind(this);
@@ -19,27 +22,31 @@ class App extends Component {
 	
   onSubmit = (event) => {
 		event.preventDefault();
+		
 		this.addToQueryString(this.state.sol,this.state.camera);
 		
 	};
   
   
   addToQueryString = (sol,camera) => {
-    console.log(sol,camera);
+    // console.log(sol,camera);
 	  //Ensure that the right parameters are assigned.
 	  if(sol === "" || camera === "" || !(/\d/.test(sol)) ){
-	  	alert("Please select/fill in the right format/options");
+			// alert("Please select/fill in the right format/options");
+			this.setState({form_filled: false})
 	  	return;
-	  }
-	  console.log(sol,camera);
+		}
+		this.setState({loaded: false});
+	  // console.log(sol,camera);
     const url = `https://mars-photos.herokuapp.com/api/v1/rovers/curiosity/photos?sol=${sol}&camera=${camera}&page=1`;
-    console.log(url);
+    // console.log(url);
     request({url, json: true}, (error,response) =>{
       if(response){
         const data = response.body.photos;
-        console.log(data);
-	      alert(`${data.length} photos found`);
-        this.setState({photos: data});
+        // console.log(data);
+	      // alert(`${data.length} photos found`);
+				this.setState({photos: data});
+				this.setState({loaded: true})
       }else if(error){
         // console.log('Error Message');
         alert(error);
@@ -66,7 +73,8 @@ class App extends Component {
 				            name="sol"
 				            placeholder="Add the sol.."
 				            value={this.state.sol}
-				            onChange={this.onChange}
+										onChange={this.onChange}
+										onFocus={() => {this.setState({form_filled: true})}}
 			            />
 		            </div>
 		            <div className="form-group">
@@ -75,7 +83,8 @@ class App extends Component {
 				            name="camera"
 				            id="camera"
 				            value={this.state.camera}
-				            onChange={this.onChange}
+										onChange={this.onChange}
+										onFocus={() => {this.setState({form_filled: true})}}
 			            >
 				            <option value="">Select Camera</option>
 				            <option value="fhaz">FHAZ</option>
@@ -92,18 +101,21 @@ class App extends Component {
 		            </div>
 	
 	            </form>
+							{
+							!this.state.form_filled &&	<span style={{padding: "0.5em", backgroundColor: "#ff000029",borderRadius: "5px",fontSize: "0.85em"}}>Please ensure that you select/fill in the right format/options</span>
+							}
             </div>
           
           </aside>
           <section id="photo-display">
+					<Loader loaded={this.state.loaded} options={options}>
             {
             this.state.photos.map(({img_src, id}) => {
-              return <>
-	              <img key={id} alt="hgjhgj" src={img_src} />
-	              </>
+              return <img key={id} alt="mars photos" src={img_src} />
             })
             
-            }
+						}
+					</Loader>
           </section>
         </main>
       </div>
@@ -111,5 +123,27 @@ class App extends Component {
   }
   
 }
+
+var options = {
+	lines: 25,
+	length: 10,
+	width: 3,
+	radius: 20,
+	scale: 1.00,
+	corners: 1,
+	color: '#000',
+	opacity: 0.25,
+	rotate: 0,
+	direction: 1,
+	speed: 0.5,
+	trail: 60,
+	fps: 30,
+	zIndex: 2e9,
+	top: '50%',
+	left: '50%',
+	shadow: false,
+	hwaccel: false,
+	position: 'relative'
+};
 
 export default App;
