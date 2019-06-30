@@ -30,7 +30,6 @@ class App extends Component {
   
   
   addToQueryString = (sol,camera) => {
-    // console.log(sol,camera);
 	  //Ensure that the right parameters are assigned.
 	  if(sol === "" || camera === "" || !(/\d/.test(sol)) ){
 			// alert("Please select/fill in the right format/options");
@@ -38,23 +37,17 @@ class App extends Component {
 	  	return;
 		}
 		this.setState({loaded: false});
-	  // console.log(sol,camera);
     const url = `https://mars-photos.herokuapp.com/api/v1/rovers/curiosity/photos?sol=${sol}&camera=${camera}&page=1`;
-    // console.log(url);
     request({url, json: true}, (error,response) =>{
       if(response){
 				const data = response.body.photos;
 				if(data.length === 0){
 					this.setState({photos_found: false})
 				}
-				console.log(data.length);
-        // console.log(data);
-	      // alert(`${data.length} photos found`);
 				this.setState({photos: data});
 				this.setState({loaded: true})
       }else if(error){
-        // console.log('Error Message');
-        alert(error);
+        console.log(error);
       }
       
     });
