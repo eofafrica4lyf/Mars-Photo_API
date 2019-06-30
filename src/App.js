@@ -121,7 +121,6 @@ class App extends Component {
             this.state.photos.map(({img_src, id}) => {
               return <img key={id} alt="mars photos" src={img_src} />
             })
-
 						}
 					</Loader>
           </section>
