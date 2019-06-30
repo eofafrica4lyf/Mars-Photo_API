@@ -12,7 +12,8 @@ class App extends Component {
         sol: "",
 				camera: "",
 				loaded: true,
-				form_filled: true
+				form_filled: true,
+				photos_found: true
     };
 	  this.onChange = this.onChange.bind(this);
 	  this.onSubmit = this.onSubmit.bind(this);
@@ -42,7 +43,11 @@ class App extends Component {
     // console.log(url);
     request({url, json: true}, (error,response) =>{
       if(response){
-        const data = response.body.photos;
+				const data = response.body.photos;
+				if(data.length === 0){
+					this.setState({photos_found: false})
+				}
+				console.log(data.length);
         // console.log(data);
 	      // alert(`${data.length} photos found`);
 				this.setState({photos: data});
@@ -109,11 +114,14 @@ class App extends Component {
           </aside>
           <section id="photo-display">
 					<Loader loaded={this.state.loaded} options={options}>
+						{
+						!this.state.photos_found && <p style={{position: "relative", top: "50%", left: "45%", backgroundColor: "aliceblue", height: "22px", padding: "1em", borderRadius: "5px"}}>No photos were found!</p>
+						}
             {
             this.state.photos.map(({img_src, id}) => {
               return <img key={id} alt="mars photos" src={img_src} />
             })
-            
+
 						}
 					</Loader>
           </section>
