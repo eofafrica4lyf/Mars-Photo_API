@@ -36,6 +36,7 @@ class App extends Component {
 			this.setState({form_filled: false})
 	  	return;
 		}
+		this.setState({photos_found: true})
 		this.setState({loaded: false});
     const url = `https://mars-photos.herokuapp.com/api/v1/rovers/curiosity/photos?sol=${sol}&camera=${camera}&page=1`;
     request({url, json: true}, (error,response) =>{
